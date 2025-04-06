@@ -1,7 +1,7 @@
 // LIFFアプリの初期化とメイン処理
 async function main() {
     // 1. LIFF ID を設定 ※後で新しいLIFF IDに置き換えます
-    const liffId = "ここに新しいLIFF_IDを設定"; // ★★★ 後で必ず新しいIDに書き換える ★★★
+    const liffId = "2007212345-q37WaY8r"; // ★★★ 後で必ず新しいIDに書き換える ★★★
 
     // 2. LIFF アプリの初期化
     try {
