@@ -87,12 +87,11 @@ function setupBookingForm() {
             const response = await fetch(gasWebAppUrl, {
                 method: 'POST',
                 headers: {
-                    // GAS Web Appでは通常Content-Type指定は必須ではないが、念のため
-                    'Content-Type': 'application/json'
+                    // ★★★ Content-Type を 'text/plain' に変更 ★★★
+                    'Content-Type': 'text/plain',
                 },
-                // GAS側は e.postData.contents をJSON.parseするので、文字列化して送る
+                // body は JSON 文字列のまま送る
                 body: JSON.stringify(postData),
-                // mode: 'no-cors' は使用しない (GASはCORS対応不要で、応答を取得したい)
             });
 
             console.log(`GASからの応答ステータス: ${response.status}`);
