@@ -1,0 +1,66 @@
+body {
+    font-family: sans-serif;
+    padding: 15px;
+    background-color: #f4f4f4; /* 少し背景色をつける */
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 1.5em; /* 少し大きく */
+    margin-bottom: 20px;
+}
+
+#date-options {
+    display: flex; /* ボタンを横並びにする準備 */
+    flex-direction: column; /* 縦方向に並べる */
+    gap: 10px; /* ボタン間の隙間 */
+    margin-bottom: 20px;
+}
+
+.date-button {
+    padding: 12px 15px;
+    background-color: #00B900; /* LINEっぽい緑色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+    transition: background-color 0.2s; /* ホバー時の変化を滑らかに */
+}
+
+.date-button:hover {
+    background-color: #008e00; /* ホバー時に少し暗く */
+}
+
+/* TODO: 選択されたボタンのスタイルを追加 */
+.date-button.selected {
+   background-color: #005c00; /* 例: 選択されたらさらに暗く */
+   font-weight: bold;
+}
+
+
+#send-button {
+    display: block; /* ブロック要素にして幅を親に合わせる */
+    width: 100%; /* 幅を100%に */
+    padding: 15px;
+    background-color: #007bff; /* 送信ボタンは青系に */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+#send-button:disabled {
+    background-color: #cccccc; /* 無効時はグレーに */
+    cursor: not-allowed; /* カーソルを変更 */
+    opacity: 0.7; /* 少し薄く */
+}
+
+#send-button:not(:disabled):hover {
+    background-color: #0056b3; /* ホバー時に少し暗く */
+}
