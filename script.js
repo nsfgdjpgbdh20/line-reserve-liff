@@ -77,21 +77,19 @@ function displayDateOptions() {
         console.log(`送信ボタンクリック: ${selectedDate} を送信します`);
         // ★★★ LINEにメッセージを送信する処理 ★★★
         try {
-            const message = {
+            console.log("★★★ 固定メッセージで送信テスト ★★★");
+            const simpleMessage = {
                 type: 'text',
-                text: `予約希望: ${selectedDate}` // 送信するメッセージ内容
+                text: 'テストメッセージ送信' // ★★★ 変数を使わない固定の文字列 ★★★
             };
-            console.log("liff.sendMessages を呼び出します:", message);
-            await liff.sendMessages([message]); // ★★★ await を追加 ★★★
+            console.log("liff.sendMessages を呼び出します:", simpleMessage);
+            await liff.sendMessages([simpleMessage]); // ★★★ 固定メッセージで実行 ★★★
             console.log("メッセージ送信成功");
-
-            // ★★★ 送信後にLIFFを閉じる ★★★
-            console.log("LIFFウィンドウを閉じます...");
             liff.closeWindow();
-
         } catch (error) {
             console.error("メッセージ送信中にエラーが発生しました:", error);
-            alert(`メッセージの送信に失敗しました: ${error.message}`);
+            // ★★★ エラーメッセージをより詳細に出力 ★★★
+            alert(`メッセージ送信失敗:\n${error.message}\n${error.stack || ''}`);
         }
         // ★★★ ここまで ★★★
 
