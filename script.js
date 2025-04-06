@@ -20,8 +20,29 @@ async function main() {
             const profile = await liff.getProfile();
             console.log("★★★ プロフィール取得成功！ ★★★");
             console.log("プロフィール情報:", profile);
-            // 成功したらユーザーにアラートで表示
-            alert(`こんにちは、${profile.displayName} さん！`);
+            alert(`こんにちは、${profile.displayName} さん！`); // プロフィール表示
+
+            // ★★★★★ ここから追加 ★★★★★
+            console.log("続けて liff.sendMessages() のテストを実行します...");
+            try {
+                const testMessage = {
+                    type: 'text',
+                    text: 'プロフィール取得後の送信テストです！' // 固定メッセージ
+                };
+                console.log("liff.sendMessages を呼び出し:", testMessage);
+                await liff.sendMessages([testMessage]);
+                console.log("★★★ メッセージ送信テスト成功！ ★★★");
+                // 送信成功したらアラートでお知らせ（closeWindowはしない）
+                alert("テストメッセージの送信に成功しました！トーク画面を確認してください。");
+                liff.closeWindow(); // メッセージ送信成功したら閉じる
+
+            } catch (sendMessageError) {
+                console.error("XXX メッセージ送信テスト中にエラー XXX");
+                console.error("エラーオブジェクト:", sendMessageError);
+                // 送信失敗したらアラートでお知らせ
+                alert(`テストメッセージの送信に失敗しました: ${sendMessageError.message}`);
+            }
+            // ★★★★★ ここまで追加 ★★★★★
 
         } catch (profileError) {
             console.error("XXX プロフィール取得中にエラー XXX");
