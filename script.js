@@ -1,29 +1,40 @@
 // LIFFアプリの初期化とメイン処理
 async function main() {
-    // 1. LIFF ID を設定 ※後でLINE Developersコンソールで取得した値に置き換えます
-    const liffId = "2007212345-xRWLXJ1O"; // 必ず後で置き換えてください！
+    const liffId = "2007212345-xRWLXJ1O"; // あなたのLIFF ID
 
-    // 2. LIFF アプリの初期化
     try {
-        console.log("LIFF アプリを初期化します...");
+        console.log("--- プロフィール取得テスト 開始 ---");
         await liff.init({ liffId: liffId });
         console.log("LIFF 初期化完了");
 
-        // 3. LINEにログインしているか確認
         if (!liff.isLoggedIn()) {
-            console.log("LINEにログインしていません。ログインします。");
-            // ログインしていなければ、ログインページにリダイレクト
+            console.log("未ログイン。ログインします。");
             liff.login();
-            return; // ログイン処理に移行するため、ここで処理を中断
+            return;
         }
-        console.log("LINEログイン済みです。");
+        console.log("ログイン済み。");
 
-        // 4. 候補日の表示（仮）
-        displayDateOptions();
+        // ★★★ liff.getProfile() を試す ★★★
+        console.log("liff.getProfile() を呼び出します...");
+        try {
+            const profile = await liff.getProfile();
+            console.log("★★★ プロフィール取得成功！ ★★★");
+            console.log("プロフィール情報:", profile);
+            // 成功したらユーザーにアラートで表示
+            alert(`こんにちは、${profile.displayName} さん！`);
 
-    } catch (error) {
-        console.error("LIFF 初期化中にエラーが発生しました:", error);
+        } catch (profileError) {
+            console.error("XXX プロフィール取得中にエラー XXX");
+            console.error("エラーオブジェクト:", profileError);
+            alert(`プロフィールの取得に失敗しました: ${profileError.message}`);
+        }
+        // ★★★ ここまで ★★★
+
+    } catch (initError) {
+        console.error("LIFF 初期化中にエラーが発生しました:", initError);
         alert("LIFFアプリの読み込みに失敗しました。");
+    } finally {
+        console.log("--- プロフィール取得テスト 終了 ---");
     }
 }
 
