@@ -31,6 +31,7 @@ async function main() {
 function displayDateOptions() {
     const dateOptionsDiv = document.getElementById('date-options');
     const sendButton = document.getElementById('send-button');
+    let selectedDate = null; // ★★★ 選択された日付を保持する変数を追加 ★★★
 
     // 仮の候補日データ (将来は動的に生成する)
     const availableDates = ["7月10日(水) 10:00", "7月11日(木) 14:00", "7月12日(金) 19:00"];
@@ -42,14 +43,22 @@ function displayDateOptions() {
         button.textContent = dateString;
         button.classList.add('date-button'); // CSSでスタイルを適用するためクラスを追加
 
-        // --- ボタンクリック時の処理 ---
+        // --- ボタンクリック時の処理 (修正) ---
         button.onclick = () => {
             console.log(`日付が選択されました: ${dateString}`);
-            // TODO: 選択状態の管理と送信ボタンの有効化処理を追加
-            alert(`「${dateString}」を選択しました。\n（まだ送信機能は実装されていません）`);
-            // とりあえず送信ボタンを有効化してみる（後でちゃんと選択状態を管理する）
-            sendButton.disabled = false;
-            // TODO: 選択されたボタンを目立たせる処理も追加したい
+            selectedDate = dateString; // ★★★ 選択された日付を記憶 ★★★
+            sendButton.disabled = false; // ★★★ 送信ボタンを有効化 ★★★
+
+            // --- 選択状態の見た目を変更する処理（追加） ---
+            // まず全てのボタンから 'selected' クラスを削除
+            document.querySelectorAll('.date-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            // クリックされたボタンに 'selected' クラスを追加
+            button.classList.add('selected');
+            // --- ここまで ---
+
+            // alert(`「${dateString}」を選択しました。\n（まだ送信機能は実装されていません）`); // ← アラートは削除してもOK
         };
         // --- ボタンクリック時の処理 ここまで ---
 
@@ -58,17 +67,38 @@ function displayDateOptions() {
 
     console.log("候補日ボタンの作成完了");
 
-    // --- 送信ボタンクリック時の処理（仮） ---
-    sendButton.onclick = () => {
-        // TODO: 選択された日付を取得してメッセージを送信する処理を追加
-        alert("送信ボタンがクリックされました。\n（まだメッセージ送信機能は実装されていません）");
-        // liff.sendMessages([{ type: 'text', text: 'ここに送信メッセージ' }])
-        //   .then(() => { liff.closeWindow(); }) // 送信後ウィンドウを閉じる
-        //   .catch((err) => { console.error('メッセージ送信エラー', err); });
+    sendButton.onclick = async () => { // ★★★ async を追加 ★★★
+        if (!selectedDate) {
+            // 通常はボタンが無効なのでここには来ないはずだが、念のため
+            alert("予約希望日時を選択してください。");
+            return;
+        }
+
+        console.log(`送信ボタンクリック: ${selectedDate} を送信します`);
+        // ★★★ LINEにメッセージを送信する処理 ★★★
+        try {
+            const message = {
+                type: 'text',
+                text: `予約希望: ${selectedDate}` // 送信するメッセージ内容
+            };
+            console.log("liff.sendMessages を呼び出します:", message);
+            await liff.sendMessages([message]); // ★★★ await を追加 ★★★
+            console.log("メッセージ送信成功");
+
+            // ★★★ 送信後にLIFFを閉じる ★★★
+            console.log("LIFFウィンドウを閉じます...");
+            liff.closeWindow();
+
+        } catch (error) {
+            console.error("メッセージ送信中にエラーが発生しました:", error);
+            alert(`メッセージの送信に失敗しました: ${error.message}`);
+        }
+        // ★★★ ここまで ★★★
+
+        // alert("送信ボタンがクリックされました。\n（まだメッセージ送信機能は実装されていません）"); // ← 古いアラートは削除
     };
     // --- 送信ボタンクリック時の処理 ここまで ---
 }
-
 
 // LIFF アプリを実行
 main();
